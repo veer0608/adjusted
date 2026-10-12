@@ -63,7 +63,12 @@ def build(upto: int) -> duckdb.DuckDBPyConnection:
 def main() -> None:
     n = int(sys.argv[1])
     name = next(name for num, name, _ in exercises() if num == n)
-    con = build(n)
+    try:
+        con = build(n)
+    except NotWritten as e:
+        sys.exit(f"{e}. Open it, write the query under the comments, save, then run this again.")
+    except RuntimeError as e:
+        sys.exit(str(e))
     print(con.sql(f"select * from {name}").limit(20))
     print(con.sql(f"select count(*) as rows from {name}"))
 
