@@ -1,0 +1,19 @@
+-- Exercise 3: each day's move against the stock's previous trading day.
+-- Practises: LAG, PARTITION BY, and the NULL that LAG returns on a first row.
+--
+-- Source table: prices (NSE, one row per symbol per trading day)
+--   symbol, series, isin, trade_date, open, high, low, close, volume
+--
+-- For every row, find the close of the same symbol's previous row by date.
+-- pct_move = (close - prev_close) / prev_close * 100, not rounded.
+--
+-- Output columns, in this order: symbol, trade_date, close, prev_close, pct_move
+-- Rows: every row of prices, including each symbol's first day (where
+-- prev_close and pct_move are NULL).
+--
+-- Two traps the tests check:
+--   - A stock can move between series EQ and BE. That is still the same stock.
+--   - A split changes the ISIN (TDPOWERSYS does on 2026-08-24). Also the same stock.
+--
+-- Test: pytest tests/test_ex3.py
+

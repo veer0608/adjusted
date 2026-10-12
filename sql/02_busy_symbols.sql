@@ -1,0 +1,17 @@
+-- Exercise 2: which symbols paid more than one dividend in the window?
+-- Practises: WHERE vs HAVING. One filter here acts on rows, the other on
+-- groups. Decide which is which before you write the query.
+--
+-- Source table: corporate_actions
+--
+-- Count the dividend actions (kind = 'dividend') per symbol.
+-- Keep only symbols with 2 or more.
+--
+-- Output columns, in this order: symbol, n_dividends
+--
+-- Trap to check after it passes: drop the kind filter and run it again
+-- (python db.py 2). The count of symbols goes up. Write one line at the
+-- bottom of this file saying which rows got counted that should not have.
+--
+-- Test: pytest tests/test_ex2.py
+

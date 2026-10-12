@@ -1,0 +1,20 @@
+-- Exercise 1: turn each split and bonus into one adjustment factor.
+-- Practises: CASE, and what NULL does when a CASE has no matching branch.
+--
+-- Source table: corporate_actions (one row per action NSE announced)
+--   symbol, series, isin, ex_date, kind, num_a, num_b, subject
+--   kind is one of: split, bonus, dividend, demerger, rights, other
+--   For a split, num_a is the old face value and num_b the new one.
+--     "From Rs 10 To Rs 2" -> num_a = 10, num_b = 2
+--   For a bonus "x:y" (x new shares for every y held), num_a = x, num_b = y.
+--
+-- The factor is how many shares you hold after the action for each share you
+-- held before. Work it out on paper for both kinds before writing anything.
+--   Check yourself: a 10 -> 2 split is 5. A Bonus 1:1 is 2. A Bonus 2:1 is 3.
+--
+-- Output columns, in this order: symbol, ex_date, kind, factor
+-- Rows: only splits and bonuses. Every other kind has no factor and must not
+-- appear.
+--
+-- Test: pytest tests/test_ex1.py
+

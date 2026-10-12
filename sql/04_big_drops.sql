@@ -1,0 +1,21 @@
+-- Exercise 4: every drop of 30% or more, and the corporate action behind it.
+-- Practises: LEFT JOIN, and where a filter on the right-hand table belongs.
+--
+-- Sources: daily_moves (your exercise 3), corporate_actions
+--
+-- Start from every row of daily_moves with pct_move <= -30.
+-- Attach the corporate action for that symbol whose ex_date is that
+-- trade_date, but only actions of kind split, bonus or demerger. A dividend
+-- does not explain a 30% drop.
+-- A drop with no such action must still appear, with kind NULL. Those are
+-- the real crashes, and they are the interesting rows.
+--
+-- Output columns, in this order: symbol, trade_date, pct_move, kind
+-- Rows: one per big drop.
+--
+-- The trap: there is one place to put the kind filter that silently deletes
+-- every unexplained drop. The tests will catch it. Once it passes, write a
+-- comment at the bottom saying why the other place breaks it.
+--
+-- Test: pytest tests/test_ex4.py
+

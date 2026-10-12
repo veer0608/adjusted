@@ -1,0 +1,23 @@
+-- Exercise 6: rank each day's movers on adjusted prices.
+-- Practises: RANK vs DENSE_RANK, and window functions over a view built from
+-- another window function.
+--
+-- Source: adjusted_prices (your exercise 5)
+--
+-- adj_pct_move = the day's move computed from adj_close (the same way as
+--                exercise 3 but on adj_close), rounded to 2 decimals.
+-- Within each trade_date, rank by adj_pct_move, biggest gain first:
+--   rnk        = RANK()
+--   dense_rnk  = DENSE_RANK()
+-- Rounding to 2 decimals makes ties common (many stocks stop at the same
+-- price band), which is what makes the two rankings differ.
+--
+-- Output columns, in this order: trade_date, symbol, adj_pct_move, rnk, dense_rnk
+-- Rows: every symbol-day that has an adj_pct_move (leave out the NULL ones).
+--
+-- When it passes, run: python db.py 6
+-- and find a day where rnk jumps (1, 1, 3). Write one line at the bottom
+-- explaining why dense_rnk on that day says 2 instead.
+--
+-- Test: pytest tests/test_ex6.py
+

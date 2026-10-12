@@ -1,0 +1,23 @@
+-- Exercise 5: rewrite history in today's shares.
+-- Practises: joining on an inequality, aggregating a product, and NULL from an
+-- aggregate over zero rows.
+--
+-- Sources: prices, action_factors (your exercise 1)
+--
+-- GOODLUCK closed at 1439.40 on 2026-08-20. On 2026-08-21 (Bonus 2:1, factor 3)
+-- every share became 3 shares. In today's shares, that 1439.40 was worth
+-- 1439.40 / 3 = 479.80. That is the adjusted close.
+--
+-- For each price row:
+--   adj_factor = product of the factors of every action for that symbol with
+--                ex_date AFTER this trade_date. A row with no later action
+--                has adj_factor 1, never NULL.
+--   adj_close  = close / adj_factor
+--
+-- SQL has no PRODUCT() aggregate. Think about what log turns a product into.
+--
+-- Output columns, in this order: symbol, trade_date, close, adj_factor, adj_close
+-- Rows: every row of prices.
+--
+-- Test: pytest tests/test_ex5.py
+
