@@ -17,4 +17,38 @@
 -- appear.
 --
 -- Test: pytest tests/test_ex1.py
+--
+-- WORKED EXAMPLE. Written by Claude, at Veer's request, as the model for
+-- exercises 2 to 6. Read every comment; the rest of the queries are his.
+
+select
+    -- These three are copied across unchanged. A SELECT list is just
+    -- "which columns, in which order", and the tests check the order.
+    symbol,
+    ex_date,
+    kind,
+
+    -- CASE checks each WHEN from the top and returns the first match.
+    case
+        -- Split: you hold old_face / new_face shares per old share.
+        -- Rs 10 -> Rs 2 means each share becomes 10 / 2 = 5 shares.
+        when kind = 'split' then num_a / num_b
+
+        -- Bonus x:y: for every y shares you get x extra, so y shares
+        -- become x + y. Per share that is (x + y) / y.
+        -- Bonus 2:1 -> (2 + 1) / 1 = 3. Bonus 1:3 -> (1 + 3) / 3 = 1.33.
+        -- The brackets matter: num_a + num_b / num_b would divide first.
+        when kind = 'bonus' then (num_a + num_b) / num_b
+
+        -- No ELSE. A row matching no WHEN gets NULL, never 0 or an error.
+        -- A dividend would come out with factor NULL, which is why the
+        -- WHERE below has to remove those rows rather than leave them in.
+    end as factor
+
+from corporate_actions
+
+-- WHERE runs before SELECT and throws rows away one at a time. Only
+-- splits and bonuses have a factor, so only they are kept: 14 + 7 = 21.
+-- IN (...) is shorthand for kind = 'split' OR kind = 'bonus'.
+where kind in ('split', 'bonus')
 

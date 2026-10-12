@@ -72,5 +72,5 @@ python -m venv .venv
 
 ## Status
 
-Data and tests are in place. The SQL in `sql/` is being written by hand, one query at a
-time, with no generated code.
+Data and tests are in place. Query 1 is a worked example, written by Claude with a comment on
+every line, as the model for the rest. Queries 2 to 6 are being written by hand.
