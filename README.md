@@ -72,5 +72,7 @@ python -m venv .venv
 
 ## Status
 
-Data and tests are in place. Queries 1 to 5 are worked examples, written by Claude with a comment
-on every line. Query 6 is not written yet.
+All six queries are written and all 40 tests pass. They were written by Claude at my request,
+with a comment on every line explaining why it is there, and I worked through each one by
+answering an interview-style question about it (why HAVING and not WHERE, why partition by
+symbol, why a right-table filter belongs in ON, why the COALESCE).
