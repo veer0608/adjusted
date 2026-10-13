@@ -72,5 +72,5 @@ python -m venv .venv
 
 ## Status
 
-Data and tests are in place. Queries 1 to 4 are worked examples, written by Claude with a comment
-on every line. Queries 5 and 6 are not written yet.
+Data and tests are in place. Queries 1 to 5 are worked examples, written by Claude with a comment
+on every line. Query 6 is not written yet.
