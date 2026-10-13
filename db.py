@@ -42,7 +42,7 @@ def build(upto: int) -> duckdb.DuckDBPyConnection:
         create table corporate_actions as
         select * from read_csv('{(DATA / 'corporate_actions.csv').as_posix()}', header = true,
             columns = {{
-                'symbol': 'VARCHAR', 'series': 'VARCHAR', 'isin': 'VARCHAR',
+                'feed': 'VARCHAR', 'symbol': 'VARCHAR', 'series': 'VARCHAR', 'isin': 'VARCHAR',
                 'ex_date': 'DATE', 'kind': 'VARCHAR', 'num_a': 'DOUBLE',
                 'num_b': 'DOUBLE', 'subject': 'VARCHAR'
             }})

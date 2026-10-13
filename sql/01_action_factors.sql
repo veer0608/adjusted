@@ -48,7 +48,7 @@ select
 from corporate_actions
 
 -- WHERE runs before SELECT and throws rows away one at a time. Only
--- splits and bonuses have a factor, so only they are kept: 14 + 7 = 21.
+-- splits and bonuses have a factor, so only they are kept: 20 + 7 = 27.
 -- IN (...) is shorthand for kind = 'split' OR kind = 'bonus'.
 where kind in ('split', 'bonus')
 

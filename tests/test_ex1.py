@@ -10,7 +10,7 @@ def test_columns(con):
 def test_only_splits_and_bonuses(con):
     kinds = {k for (k,) in rows(con, "select distinct kind from action_factors")}
     assert kinds == {"split", "bonus"}
-    assert rows(con, "select count(*) from action_factors") == [(21,)]
+    assert rows(con, "select count(*) from action_factors") == [(27,)]  # 20 splits (6 ETF) + 7 bonuses
 
 
 def test_no_null_factors(con):

@@ -12,7 +12,7 @@ def test_every_big_drop_kept(con):
 
 def test_unexplained_drops_survive(con):
     # If this is 0, the kind filter is in the wrong place.
-    assert rows(con, "select count(*) from big_drops where kind is null") == [(13,)]
+    assert rows(con, "select count(*) from big_drops where kind is null") == [(7,)]
 
 
 def test_one_row_per_drop(con):

@@ -30,7 +30,7 @@ select
 from daily_moves m
 
 -- LEFT JOIN keeps every row of the left table (the drops), matched or not.
--- An INNER JOIN would keep only drops that have an action, and the 13 real
+-- An INNER JOIN would keep only drops that have an action, and the 7 real
 -- crashes would vanish.
 left join corporate_actions a
     on  a.symbol  = m.symbol
@@ -49,5 +49,5 @@ where m.pct_move <= -30
 -- Why the kind filter breaks in WHERE: after a LEFT JOIN, an unmatched drop
 -- has kind NULL. "NULL in ('split', 'bonus', 'demerger')" is not true, so
 -- WHERE throws the row away. That turns the LEFT JOIN back into an INNER
--- JOIN without any error: 30 rows become 17, and every real crash is gone.
+-- JOIN without any error: 30 rows become 23, and every real crash is gone.
 

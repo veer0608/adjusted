@@ -1,4 +1,4 @@
-"""Download NSE corporate actions for a date range into data/corporate_actions.csv.
+"""Download NSE corporate actions (stocks and ETFs) into data/corporate_actions.csv.
 
     python fetch_actions.py 2026-07-01 2026-10-09
 
@@ -19,7 +19,10 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parent / "data" / "corporate_actions.csv"
 PAGE = "https://www.nseindia.com/companies-listing/corporate-filings-actions"
-API = "https://www.nseindia.com/api/corporates-corporateActions?index=equities&from_date={}&to_date={}"
+API = "https://www.nseindia.com/api/corporates-corporateActions?index={}&from_date={}&to_date={}"
+# Stocks are in "equities". ETFs trade in the same EQ series but their actions
+# (unit splits included) are only listed in "mf".
+FEEDS = ("equities", "mf")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/126.0 Safari/537.36",
@@ -48,7 +51,8 @@ def classify(subject: str):
     return "other", None, None
 
 
-def fetch(start: date, end: date) -> list[dict]:
+def fetch(start: date, end: date) -> list[tuple[str, dict]]:
+    """Return (feed, action) pairs from both feeds NSE splits listings into."""
     opener = urllib.request.build_opener(
         urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
 
@@ -59,15 +63,27 @@ def fetch(start: date, end: date) -> list[dict]:
 
     get(PAGE)
     fmt = "%d-%m-%Y"
-    return json.loads(get(API.format(start.strftime(fmt), end.strftime(fmt))))
+    out = []
+    for feed in FEEDS:
+        url = API.format(feed, start.strftime(fmt), end.strftime(fmt))
+        out += [(feed, r) for r in json.loads(get(url))]
+    return out
 
 
 def main() -> None:
     start, end = (date.fromisoformat(a) for a in sys.argv[1:3])
-    rows = []
-    for r in fetch(start, end):
+    rows, seen, dupes = [], set(), 0
+    for feed, r in fetch(start, end):
+        # The mf feed lists every action twice. A split applied twice would
+        # square its factor, so keep the first copy only.
+        key = (r["symbol"], r["exDate"], r["subject"])
+        if key in seen:
+            dupes += 1
+            continue
+        seen.add(key)
         kind, a, b = classify(r["subject"])
         rows.append({
+            "feed": feed,
             "symbol": r["symbol"],
             "series": r["series"],
             "isin": r["isin"],
@@ -82,7 +98,7 @@ def main() -> None:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    print(f"{len(rows)} actions -> {OUT}")
+    print(f"{len(rows)} actions ({dupes} duplicates dropped) -> {OUT}")
 
 
 if __name__ == "__main__":
